@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reconocimiento Facial</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Sistema de Reconocimiento Facial</h1>
+            <p>Control de Asistencias y Seguridad de Redes</p>
+        </div>
+
+        <div class="main-content">
+            <div class="camera-section">
+                <h3 class="camera-title">Vista en Tiempo Real</h3>
+                <div class="camera-container">
+                    <video id="cameraVideo" autoplay muted></video>
+                    <div class="camera-placeholder" id="cameraPlaceholder">
+                        <div class="placeholder-icon">📷</div>
+                        <div>Inicializando cámara...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3 class="controls-title">Panel de Control</h3>
+                
+                <button class="control-button" id="studentRegistrationBtn">
+                    <span class="button-icon">📝</span>
+                    <span>Registro de Alumnos</span>
+                </button>
+                
+                <button class="control-button" id="attendanceRegistrationBtn">
+                    <span class="button-icon">✅</span>
+                    <span>Registro de Asistencias</span>
+                </button>
+                
+                <button class="control-button" id="historyBtn">
+                    <span class="button-icon">📊</span>
+                    <span>Historial de Registros</span>
+                </button>
+
+                <div class="separator"></div>
+                
+                <button class="control-button exit-button" id="exitBtn">
+                    <span class="button-icon">❌</span>
+                    <span>Salir</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <span class="status-text" id="statusText">Sistema iniciando...</span>
+        </div>
+    </div>
+
+    <!-- Modal de Registro de Alumnos -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-modal="studentModal">&times;</span>
+                <h2 class="modal-title">Registro de Nuevo Alumno</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-section">
+                    <h4 class="form-title">Datos del Alumno</h4>
+                    <div class="form-group">
+                        <label class="form-label">Código de Alumno:</label>
+                        <input type="text" class="form-input" id="studentCode" placeholder="Ingrese el código del alumno">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nombre Completo:</label>
+                        <input type="text" class="form-input" id="studentName" placeholder="Ingrese el nombre completo">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h4 class="form-title">Registro Facial - Video de 10 segundos</h4>
+                    <div class="video-section">
+                        <div class="video-container">
+                            <div class="camera-container">
+                                <video id="registrationVideo" autoplay muted></video>
+                            </div>
+                        </div>
+                        <div class="video-controls">
+                            <div class="instructions">
+                                <h4>Instrucciones:</h4>
+                                <ol>
+                                    <li>Mire al frente</li>
+                                    <li>Gire lentamente a la izquierda</li>
+                                    <li>Gire lentamente a la derecha</li>
+                                    <li>Mire hacia arriba</li>
+                                    <li>Mire hacia abajo</li>
+                                    <li>Regrese al frente</li>
+                                </ol>
+                            </div>
+                            <div class="recording-controls">
+                                <button class="record-button" id="recordButton">
+                                    🎥 Iniciar Grabación
+                                </button>
+                                <div class="time-display" id="timeDisplay">Tiempo: 0/10s</div>
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="progressBar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="save-button" id="saveStudentBtn">💾 Guardar</button>
+                        <button class="cancel-button" id="cancelRegistrationBtn">❌ Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Registro de Asistencias -->
+    <div id="attendanceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-modal="attendanceModal">&times;</span>
+                <h2 class="modal-title">Registro de Asistencias</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-section">
+                    <h4 class="form-title">Reconocimiento Facial en Tiempo Real</h4>
+                    <div class="attendance-section">
+                        <div class="attendance-camera">
+                            <div class="camera-container">
+                                <video id="attendanceVideo" autoplay muted></video>
+                            </div>
+                        </div>
+                        <div class="attendance-controls">
+                            <div class="control-panel">
+                                <button class="record-button" id="startRecognitionBtn">
+                                    🎯 Iniciar Reconocimiento
+                                </button>
+                                <div class="attendance-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-label">Presentes:</span>
+                                        <span class="stat-value" id="attendanceCount">0</span>
+                                    </div>
+                                </div>
+                                <!-- BOTÓN ACTUALIZADO PARA CUADROS -->
+                                <button class="toggle-mesh-btn" id="toggleMeshBtn">
+                                    👁️ Ocultar Cuadros
+                                </button>
+                                <button class="view-attendance-btn" id="viewAttendanceBtn">
+                                    📋 Ver Asistencia de Hoy
+                                </button>
+                            </div>
+                            <div class="recognition-results" id="recognitionResults">
+                                <div class="no-faces">Inicie el reconocimiento para detectar rostros</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Historial -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" data-modal="historyModal">&times;</span>
+                <h2 class="modal-title">Historial de Registros</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-section">
+                    <div class="section-header">
+                        <h4 class="form-title">Estudiantes Registrados</h4>
+                        <button class="control-button refresh-btn" id="refreshHistoryBtn">
+                            🔄 Actualizar
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Fecha de Registro</th>
+                                    <th>Frames</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <!-- Los datos se cargarán dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

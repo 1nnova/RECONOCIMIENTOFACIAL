@@ -1,0 +1,43 @@
+{
+    "name": "facial-recognition-security",
+    "version": "1.0.0",
+    "description": "Sistema de Reconocimiento Facial para Seguridad de Redes",
+    "main": "main.js",
+    "scripts": {
+      "start": "electron .",
+      "build": "electron-builder",
+      "build-win": "electron-builder --win",
+      "dev": "electron . --dev"
+    },
+    "author": "Tu Nombre",
+    "license": "MIT",
+    "devDependencies": {
+      "electron": "^27.0.0",
+      "electron-builder": "^24.6.4"
+    },
+    "dependencies": {
+      "axios": "^1.5.0"
+    },
+    "build": {
+      "appId": "com.yourcompany.facial-recognition-security",
+      "productName": "Sistema de Reconocimiento Facial",
+      "directories": {
+        "output": "dist"
+      },
+      "files": [
+        "main.js",
+        "renderer.js",
+        "index.html",
+        "styles.css",
+        "assets/**/*"
+      ],
+      "win": {
+        "target": "nsis",
+        "icon": "assets/icon.ico"
+      },
+      "nsis": {
+        "oneClick": false,
+        "allowToChangeInstallationDirectory": true
+      }
+    }
+  }
